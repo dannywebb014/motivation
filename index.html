@@ -73,6 +73,8 @@
   blockquote.long{font-size:clamp(16.5px,2.5vw,19px);line-height:1.6;letter-spacing:0}
   blockquote::before{content:'\201C'}
   blockquote::after{content:'\201D'}
+  blockquote.empty{font-style:normal;font-family:var(--body);font-size:16px;color:var(--muted)}
+  blockquote.empty::before,blockquote.empty::after{content:none}
   .author{
     margin-top:20px;font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent-text);
   }
@@ -179,22 +181,9 @@
 </div>
 
 <script>
-/* ── The quotes. Add as many as you like: {q:'…', a:'Who said it'} ──
-   a: '' leaves the author line off.                                   */
-const QUOTES = [
-  {"q": "Try to expose yourself to the best things humans have done and then try to bring those thing into what you’re doing.", "a": "Steve Jobs"},
-  {"q": "Goals are for people who care about winning once. Systems are for people who care about winning repeatedly.", "a": ""},
-  {"q": "Stillness is a radical act in today’s world. Reclaiming presence starts with simple acts: placing your phone face-down, sitting in silence, or truly savouring a meal. By pausing, we disrupt the cycle of endless consumption and rediscover our own thoughts.", "a": ""},
-  {"q": "I learned a long time ago that there is something worse than missing the goal, and that’s not pulling the trigger.", "a": "Mia Hamm"},
-  {"q": "The secret of getting ahead is getting started. The secret of getting started is breaking your complex overwhelming tasks into small, manageable tasks, and then starting on the first one.", "a": ""},
-  {"q": "Stop consuming. Start creating.", "a": ""},
-  {"q": "Confusion is a gift from God. Those times when you feel most desperate for a solution, sit. Wait. The information will become clear. The confusion is there to guide you. Seek detachment and become the producer of your life.", "a": "RZA, The Tao of Wu"},
-  {"q": "People think they’re healthy just because they are not physically ill. If you’re drinking and smoking, overweight, eating a lot of fast food and not enough fruit, vegetables, and herbs, not getting enough rest and water, then you’re body is not in the best state to fight a virus. Do not wait until you are too sick to change your eating habits. Do not wait until you are too sick to rest. Do not wait until you are too sick to care about your health and wellness.", "a": ""},
-  {"q": "Live with urgency. You don’t have as much time as you think you do. The days are long but the decades are short. You blink and decades will pass you by. Make this your new mantra: Do it now. Do it now. Do it now. If something can be done in the present, there is absolutely no reason to wait. Delay is the enemy. Urgency must become second nature — especially for the things that truly matter. Act as if hesitation could cost you everything, as if inaction would lead to irreversible loss. Picture the worst-case scenario if you don’t move now — the kind of regret you’d carry for years.", "a": ""},
-  {"q": "Not taking risks leads to regrets which ages you faster. You feel like you could have done more but you never do. You always move decisions to the future where you have zero accountability. It’s f*cking sad, man.", "a": ""},
-  {"q": "Busyness isn’t cool. It means your life is out of control and you have no focus.", "a": ""},
-  {"q": "My health isn’t just about me. Having energy and the freedom to move, play, express, experience and be fully present for the moments that matter most… that’s what it’s all about. Showing up as the best version of myself for me and my family is my reason.", "a": ""}
-];
+/* ── Quotes live in Supabase, added through the + button. This list is
+   only a fallback for anyone opening the page signed out.           ── */
+const QUOTES = [];   // all quotes live in Supabase now — see seed-quotes.sql
 
 /* ── Supabase (same project as food.) ──────────────────────────────── */
 const SUPABASE_URL = 'https://tvpmeysctvlhjyhotfyk.supabase.co';
@@ -212,15 +201,16 @@ function rememberIndex(i){
   try { localStorage.setItem(LAST_KEY, String(i)); } catch(e){}
 }
 function pick(){
-  if(QUOTES.length < 2) return 0;
+  if(pool.length < 2) return 0;
   const last = lastIndex();
   let i;
-  do { i = Math.floor(Math.random() * QUOTES.length); } while(i === last);
+  do { i = Math.floor(Math.random() * pool.length); } while(i === last);
   return i;
 }
 function show(i, animate){
-  const item = QUOTES[i];
-  qEl.className = item.q.length > 260 ? 'long' : item.q.length > 120 ? 'mid' : '';
+  const empty = !pool.length;
+  const item = pool[i] || {q:'No quotes yet — tap + to sign in and load them.', a:''};
+  qEl.className = empty ? 'empty' : item.q.length > 260 ? 'long' : item.q.length > 120 ? 'mid' : '';
   qEl.textContent = item.q;
   aEl.textContent = item.a || '';
   rememberIndex(i);
