@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>motivation.</title>
+<meta name="description" content="A motivational quote, fresh every time you open it.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="motivation.">
+<meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1e1a" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* My Hub theme (food., train., breathe., lifeOS.) — cobalt accent */
+  :root{
+    --bg:#f4f1ea; --surface:#fffdf8;
+    --line:#e5dfd0;
+    --text:#2c2218; --muted:#6b6055; --faint:#a8a295;
+    --accent:#3d6ba8; --accent-hover:#2d5a90; --accent-text:#2d5a90;
+    --accent-dim:#3d6ba812; --accent-border:#3d6ba830;
+    --on-accent:#fff;
+    --shadow:0 1px 3px rgba(44,34,24,.06);
+    --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.035 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    --disp:'Lora',Georgia,serif;
+    --body:'Source Sans 3',system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#1a1e1a; --surface:#232823;
+      --line:#3a423a;
+      --text:#ebe8de; --muted:#a8a89c; --faint:#6b7568;
+      --accent:#5a8ac2; --accent-hover:#6b9bd1; --accent-text:#9fc0e0;
+      --accent-dim:#5a8ac21c; --accent-border:#5a8ac238;
+      --on-accent:#1a1e1a;
+      --shadow:0 1px 4px rgba(0,0,0,.35);
+      --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      color-scheme:dark;
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{height:100%}
+  body{
+    min-height:100%;
+    background:var(--bg);background-image:var(--noise);color:var(--text);
+    font-family:var(--body);font-size:16px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    display:flex;flex-direction:column;align-items:center;
+    padding:calc(24px + env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom));
+  }
+  header{width:100%;max-width:680px}
+  .logo{font-family:var(--disp);font-size:32px;font-weight:600;font-style:italic;letter-spacing:-.5px;line-height:1.1;color:var(--accent-text)}
+  .logo span{font-style:normal;color:var(--accent)}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;width:100%;max-width:680px;padding:24px 0}
+  .quote-card{
+    width:100%;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:12px;box-shadow:var(--shadow);padding:40px 36px;text-align:left;
+  }
+  blockquote{
+    font-family:var(--disp);font-style:italic;font-weight:500;
+    font-size:clamp(22px,4.4vw,30px);line-height:1.35;letter-spacing:-.3px;color:var(--text);
+  }
+  blockquote.mid{font-size:clamp(19px,3.2vw,23px);line-height:1.45}
+  blockquote.long{font-size:clamp(16.5px,2.5vw,19px);line-height:1.6;letter-spacing:0}
+  blockquote::before{content:'\201C'}
+  blockquote::after{content:'\201D'}
+  .author{
+    margin-top:20px;font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent-text);
+  }
+  .author:empty{display:none}
+  .fade{animation:fade .4s cubic-bezier(.2,.8,.2,1)}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  footer{width:100%;max-width:680px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:24px}
+  .btn{
+    appearance:none;background:var(--accent);color:var(--on-accent);border:1px solid var(--accent);
+    border-radius:9px;font-family:var(--body);font-weight:600;font-size:14px;padding:11px 20px;cursor:pointer;
+    transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .count{font-size:12px;color:var(--faint)}
+
+  @media (max-width:560px){
+    .quote-card{padding:28px 24px}
+    footer .btn{flex:1;justify-content:center}
+  }
+  @media (prefers-reduced-motion:reduce){.fade{animation:none}}
+</style>
+</head>
+<body>
+
+<header><div class="logo">motivation<span>.</span></div></header>
+
+<main>
+  <div class="quote-card">
+    <blockquote id="quote"></blockquote>
+    <div class="author" id="author"></div>
+  </div>
+</main>
+
+<footer>
+  <button class="btn" id="another">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+    Another one
+  </button>
+  <span class="count" id="count"></span>
+</footer>
+
+<script>
+/* ── The quotes. Add as many as you like: {q:'…', a:'Who said it'} ──
+   a: '' leaves the author line off.                                   */
+const QUOTES = [
+  {"q": "Try to expose yourself to the best things humans have done and then try to bring those thing into what you’re doing.", "a": "Steve Jobs"},
+  {"q": "Goals are for people who care about winning once. Systems are for people who care about winning repeatedly.", "a": ""},
+  {"q": "Stillness is a radical act in today’s world. Reclaiming presence starts with simple acts: placing your phone face-down, sitting in silence, or truly savouring a meal. By pausing, we disrupt the cycle of endless consumption and rediscover our own thoughts.", "a": ""},
+  {"q": "I learned a long time ago that there is something worse than missing the goal, and that’s not pulling the trigger.", "a": "Mia Hamm"},
+  {"q": "The secret of getting ahead is getting started. The secret of getting started is breaking your complex overwhelming tasks into small, manageable tasks, and then starting on the first one.", "a": ""},
+  {"q": "Stop consuming. Start creating.", "a": ""},
+  {"q": "Confusion is a gift from God. Those times when you feel most desperate for a solution, sit. Wait. The information will become clear. The confusion is there to guide you. Seek detachment and become the producer of your life.", "a": "RZA, The Tao of Wu"},
+  {"q": "People think they’re healthy just because they are not physically ill. If you’re drinking and smoking, overweight, eating a lot of fast food and not enough fruit, vegetables, and herbs, not getting enough rest and water, then you’re body is not in the best state to fight a virus. Do not wait until you are too sick to change your eating habits. Do not wait until you are too sick to rest. Do not wait until you are too sick to care about your health and wellness.", "a": ""},
+  {"q": "Live with urgency. You don’t have as much time as you think you do. The days are long but the decades are short. You blink and decades will pass you by. Make this your new mantra: Do it now. Do it now. Do it now. If something can be done in the present, there is absolutely no reason to wait. Delay is the enemy. Urgency must become second nature — especially for the things that truly matter. Act as if hesitation could cost you everything, as if inaction would lead to irreversible loss. Picture the worst-case scenario if you don’t move now — the kind of regret you’d carry for years.", "a": ""},
+  {"q": "Not taking risks leads to regrets which ages you faster. You feel like you could have done more but you never do. You always move decisions to the future where you have zero accountability. It’s f*cking sad, man.", "a": ""},
+  {"q": "Busyness isn’t cool. It means your life is out of control and you have no focus.", "a": ""},
+  {"q": "My health isn’t just about me. Having energy and the freedom to move, play, express, experience and be fully present for the moments that matter most… that’s what it’s all about. Showing up as the best version of myself for me and my family is my reason.", "a": ""}
+];
+
+const LAST_KEY = 'motivation:last';
+const qEl = document.getElementById('quote');
+const aEl = document.getElementById('author');
+const card = document.querySelector('.quote-card');
+
+function lastIndex(){
+  try { return parseInt(localStorage.getItem(LAST_KEY), 10); } catch(e){ return NaN; }
+}
+function rememberIndex(i){
+  try { localStorage.setItem(LAST_KEY, String(i)); } catch(e){}
+}
+function pick(){
+  if(QUOTES.length < 2) return 0;
+  const last = lastIndex();
+  let i;
+  do { i = Math.floor(Math.random() * QUOTES.length); } while(i === last);
+  return i;
+}
+function show(i, animate){
+  const item = QUOTES[i];
+  qEl.className = item.q.length > 260 ? 'long' : item.q.length > 120 ? 'mid' : '';
+  qEl.textContent = item.q;
+  aEl.textContent = item.a || '';
+  rememberIndex(i);
+  if(animate){
+    card.classList.remove('fade');
+    void card.offsetWidth;          // restart the animation
+    card.classList.add('fade');
+  }
+}
+
+document.getElementById('count').textContent = QUOTES.length + ' quotes';
+show(pick(), false);
+document.getElementById('another').addEventListener('click', () => show(pick(), true));
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
