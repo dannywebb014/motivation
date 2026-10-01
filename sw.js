@@ -1,7 +1,7 @@
 /* motivation. — offline cache.
    Network-first for the page itself, so new quotes show up as soon as
    they're published; falls back to the cached copy when offline. */
-const CACHE = 'motivation-v1';
+const CACHE = 'motivation-v2';
 const SHELL = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

@@ -16,6 +16,11 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script type="module">
+  // One sign-in for every hub app: no verified session, off to /lifeos/signin/.
+  import { requireAuth } from "/lifeos/auth.js";
+  await requireAuth();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="https://dannywebb014.github.io/lifeos/fonts.css">
 <style>
@@ -160,18 +165,12 @@
 <div class="sheet-backdrop" id="sheetBack" role="dialog" aria-modal="true" aria-label="Your quotes">
   <div class="sheet" id="sheet">
     <h2>Your quotes</h2>
-    <div class="sub" id="sheetSub">Sign in to add your own, on every device.</div>
+    <div class="sub" id="sheetSub">Added here, synced to every device you sign in on.</div>
 
-    <div id="authBox">
-      <div class="field"><label for="email">Email</label><input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com"></div>
-      <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" placeholder="Your food. account password"></div>
-      <div class="row"><button class="btn" id="signin">Sign in</button><button class="linkish" id="closeAuth">Not now</button></div>
-    </div>
-
-    <div id="addBox" hidden>
+    <div id="addBox">
       <div class="field"><label for="newQuote">Quote</label><textarea id="newQuote" placeholder="Paste or type a quote…"></textarea></div>
       <div class="field"><label for="newAuthor">Author <span style="text-transform:none;letter-spacing:0;font-weight:400">· optional</span></label><input id="newAuthor" type="text" placeholder="Who said it"></div>
-      <div class="row"><button class="btn" id="addQuote">Add quote</button><button class="linkish" id="signout">Sign out</button></div>
+      <div class="row"><button class="btn" id="addQuote">Add quote</button></div>
       <div class="mine" id="mine"></div>
     </div>
 
@@ -253,17 +252,11 @@ function openSheet(){ back.classList.add('show'); say(''); }
 function closeSheet(){ back.classList.remove('show'); }
 $('openSheet').addEventListener('click', openSheet);
 $('closeSheet').addEventListener('click', closeSheet);
-$('closeAuth').addEventListener('click', closeSheet);
 back.addEventListener('click', e => { if(e.target === back) closeSheet(); });
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
 
 function setSignedIn(u){
   user = u;
-  $('authBox').hidden = !!u;
-  $('addBox').hidden = !u;
-  $('sheetSub').textContent = u
-    ? 'Added here, synced to every device you sign in on.'
-    : 'Sign in to add your own, on every device.';
 }
 
 function renderMine(){
@@ -314,30 +307,15 @@ async function removeQuote(m){
   say('Deleted.', 'ok');
 }
 
-async function signIn(){
-  if(!sb){ say('Sync is not configured.', 'err'); return; }
-  const email = $('email').value.trim(), password = $('pw').value;
-  if(!email || !password){ say('Enter your email and password.', 'err'); return; }
-  say('Signing in…');
-  const res = await sb.auth.signInWithPassword({email, password});
-  if(res.error){ say(res.error.message, 'err'); return; }
-  setSignedIn(res.data.user); say(''); $('pw').value = '';
-  renderMine(); await loadMine();
-}
-
-$('signin').addEventListener('click', signIn);
-$('pw').addEventListener('keydown', e => { if(e.key === 'Enter') signIn(); });
 $('addQuote').addEventListener('click', addQuote);
-$('signout').addEventListener('click', async () => {
-  if(sb) await sb.auth.signOut();
-  setSignedIn(null); mine = []; writeCache(mine); rebuild(true); say('Signed out.');
-});
 
+// Signing in happens once, on the lifeOS. sign-in page (the gate in <head>
+// sends the browser there first), so the session is already here.
 if(sb){
   sb.auth.getSession().then(r => {
     const session = r && r.data ? r.data.session : null;
-    if(session && session.user){ setSignedIn(session.user); renderMine(); loadMine(); }
-    else setSignedIn(null);
+    setSignedIn(session && session.user ? session.user : null);
+    if(user){ renderMine(); loadMine(); }
   });
 } else setSignedIn(null);
 
