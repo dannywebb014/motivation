@@ -243,7 +243,7 @@ document.getElementById('another').addEventListener('click', () => show(pick(), 
 const sb = (window.supabase && SUPABASE_URL.indexOf('YOUR-') === -1)
   // A page-only lock, not supabase-js's browser-wide one, which a frozen page
   // on iPhone can hold for good (see lifeos/auth.js).
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { lock: (_name, _timeout, fn) => fn() } })
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { lock: (_name, _timeout, fn) => fn(), detectSessionInUrl: false } })
   : null;
 let user = null;
 
