@@ -241,7 +241,9 @@ document.getElementById('another').addEventListener('click', () => show(pick(), 
 
 /* ── the Your quotes sheet ─────────────────────────────────────────── */
 const sb = (window.supabase && SUPABASE_URL.indexOf('YOUR-') === -1)
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  // A page-only lock, not supabase-js's browser-wide one, which a frozen page
+  // on iPhone can hold for good (see lifeos/auth.js).
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { lock: (_name, _timeout, fn) => fn() } })
   : null;
 let user = null;
 
